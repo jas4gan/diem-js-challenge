@@ -1,19 +1,19 @@
 /* Declare variable */
-var nameInput = document.getElementById("name");
-var birthdayInput = document.getElementById("date");
+var nameInput = document.querySelector("#name");
+var birthdayInput = document.querySelector("#date");
 
-var fullNameOutput = document.getElementById("nameOutput");
-var ageInput = document.getElementById("ageOutput");
-var themeInput = document.getElementById("themeOutput");
-var skillsInput = document.getElementById("skillsOutput");
+var fullNameOutput = document.querySelector("#nameOutput");
+var ageInput = document.querySelector("#ageOutput");
+var themeInput = document.querySelector("#themeOutput");
+var skillsInput = document.querySelector("#skillsOutput");
 
 /* Right display */
 nameInput.addEventListener("focus", () => {
-    fullNameOutput.innerText = "Hello there! What's your name?"
+    if (nameInput.value === "") fullNameOutput.innerText = "Hello there! What's your name?";
 });
 
 nameInput.addEventListener("blur", () => {    
-    var nameTextField = document.getElementById("name").value;
+    var nameTextField = nameInput.value;
 
     nameTextField === '' ?
         fullNameOutput.innerText = "Please tell me your name. I wanna be your friend." :
@@ -21,12 +21,13 @@ nameInput.addEventListener("blur", () => {
 });
 
 birthdayInput.addEventListener("focus", () => {
-    ageInput.innerText = "Lemme guess, your age is...";
+    if (birthdayInput.value === "") ageInput.innerText = "Lemme guess, your age is...";
+
 });
 
 birthdayInput.addEventListener("blur", (birthDate) => {
     var splitDate = birthDate.target.value.split("-");
-    if (document.getElementById("date").value === '') {
+    if (birthdayInput.value === '') {
         ageInput.innerText = "Would you mind entering your birthday?";
     } else {        
         
@@ -50,95 +51,62 @@ birthdayInput.addEventListener("blur", (birthDate) => {
 });
 
 /* Toggle Light or Dark Mode */
-light.onclick = function () {    
-    document.getElementById("rightPanel").classList.remove("bg-dark", "text-white");
-    document.getElementById("rightPanel").classList.add("bg-white", "text-dark");
+var rightPanel = document.querySelector("#rightPanel");
+
+light.onclick = () => {    
+    rightPanel.classList.remove("bg-dark", "text-white");
+    rightPanel.classList.add("bg-light", "text-dark");
     themeInput.innerText = "You choose Light Mode!";
 }
 
-dark.onclick = function () {
-    document.getElementById("rightPanel").classList.remove("bg-white", "text-dark");
-    document.getElementById("rightPanel").classList.add("bg-dark", "text-white");
+dark.onclick = () => {
+    rightPanel.classList.remove("bg-light", "text-dark");
+    rightPanel.classList.add("bg-dark", "text-white");
     themeInput.innerText = "You choose Dark Mode!";
 }
 
 /* Skills */
-var htmlButton = document.getElementById("html");
-var cssButton = document.getElementById("css");
-var javascriptButton = document.getElementById("javascript");
-var skillButton = document.getElementsByTagName('button');
+var htmlButton = document.querySelector("#html");
+var cssButton = document.querySelector("#css");
+var javascriptButton = document.querySelector("#javascript");
 
 let leftPanel = htmlButton.parentNode;
-let rightPanel = document.getElementById("rightPanel");
+let rightPanelBody = document.querySelector("#rightPanelBody");
 
 /* Initial state */
 let htmlChecked = false;
 let cssChecked = false;
 let javascriptChecked = false;
 
-/* HTML Button */
-htmlButton.onclick = function () {
-    if (htmlChecked === false) {
-        rightPanel.appendChild(htmlButton);
-        htmlChecked = true;
-        /* Hover red button */
-        htmlButton.onmouseover = function () {
-            this.classList.remove("btn-success");
-            this.classList.add("btn-danger");
-        }
-        htmlButton.onmouseout = function () {
-            this.classList.remove("btn-danger");
-            this.classList.add("btn-success");
-        }
-    } else {
-        /* Return to left panel */
-        leftPanel.appendChild(htmlButton);
-        htmlChecked = false;
-    }
 
+/* Skills button click */
+let btnChosenClick = (btnChoose, btnChecked) => {
+    btnChoose.onclick = () => {
+        if (btnChecked === false) {
+            rightPanelBody.appendChild(btnChoose);
+            btnChecked = true;
+            /* Hover red button */
+            btnChoose.onmouseover = function() {
+                this.classList.remove("btn-success");
+                this.classList.add("btn-danger");
+            }
+                btnChoose.onmouseout = function() {
+                this.classList.remove("btn-danger");
+                this.classList.add("btn-success");
+            }
+        } else {
+            /* Return to left panel */
+            leftPanel.appendChild(btnChoose);
+            btnChecked = false;
+        }
+    }
 }
+
+/* HTML Button */
+btnChosenClick(htmlButton,htmlChecked);
 
 /* CSS Button */
-cssButton.onclick = function () {
-    if (cssChecked === false) {
-        rightPanel.appendChild(cssButton);
-        cssChecked = true;
-
-        /* Hover red button */
-        cssButton.onmouseover = function () {
-            this.classList.remove("btn-success");
-            this.classList.add("btn-danger");
-        }
-        cssButton.onmouseout = function () {
-            this.classList.remove("btn-danger");
-            this.classList.add("btn-success");
-        }
-    } else {
-        /* Return to left panel */
-        leftPanel.appendChild(cssButton);
-        cssChecked = false;
-    }
-}
+btnChosenClick(cssButton,cssChecked);
 
 /* Javascript Button */
-javascriptButton.onclick = function () {
-
-    if (javascriptChecked === false) {
-        rightPanel.appendChild(javascriptButton);
-        javascriptChecked = true;
-
-        /* Hover red button */
-        javascriptButton.onmouseover = function () {
-            this.classList.remove("btn-success");
-            this.classList.add("btn-danger");
-        }
-        javascriptButton.onmouseout = function () {
-            this.classList.remove("btn-danger");
-            this.classList.add("btn-success");
-        }
-    } else {
-        /* Return to left panel */
-        leftPanel.appendChild(javascriptButton);
-        javascriptChecked = false;
-    }
-}
+btnChosenClick(javascriptButton,javascriptChecked);
